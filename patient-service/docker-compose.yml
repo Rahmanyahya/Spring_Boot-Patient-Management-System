@@ -1,0 +1,42 @@
+services:
+  postgres-java:
+    image: postgres:15
+    container_name: postgres-java
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=patient-db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d patient-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - postgres-data-java:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - java-project
+    
+  patient-services:
+    build: .
+    container_name: patient-services
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    restart: unless-stopped
+    depends_on:
+      postgres-java:
+        condition: service_healthy
+    networks:
+      - java-project 
+
+volumes:
+  postgres-data-java:
+    
+networks:
+  java-project:
+    driver: "bridge"
