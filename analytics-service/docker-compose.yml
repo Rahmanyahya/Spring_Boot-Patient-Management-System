@@ -1,0 +1,15 @@
+services:
+  billing-services:
+    container_name: "analytics-services"
+    build: .
+    networks:
+      - java-project
+    ports:
+      - "4002:4000"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+networks:
+  java-project:
+    external: true
