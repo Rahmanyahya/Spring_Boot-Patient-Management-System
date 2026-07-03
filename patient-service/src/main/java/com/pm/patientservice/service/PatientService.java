@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.pm.patientservice.grpc.BillingServiceGrpcClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +17,12 @@ import com.pm.patientservice.repository.PatientRepository;
 
 @Service
 public class PatientService {
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
 
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, BillingServiceGrpcClient billingServiceGrpcClient) {
         this.patientRepository = patientRepository;
+        this.billingServiceGrpcClient = billingServiceGrpcClient;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -33,7 +36,9 @@ public class PatientService {
         if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) throw new ErrorExceptions("Email already exists", HttpStatus.CONFLICT);
 
         Patient newPatient = patientRepository.save(PatientMapper.toPatient(patientRequestDTO));
-        
+
+        billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(), newPatient.getName(), newPatient.getEmail());
+
         return PatientMapper.toDTO(newPatient);
     }
 

@@ -19,6 +19,32 @@ services:
       - "5432:5432"
     networks:
       - java-project
+
+  kafka-java:
+    image: apache/kafka
+    container_name: kafka-java
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-java:9092,EXTERNAL://localhost:9094
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=0@kafka-java:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_NODE_ID=0
+      - KAFKA_PROCESS_ROLES=controller,broker
+    healthcheck:
+      test: [ "CMD-SHELL", "nc -z localhost 9092 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - kafka-data-java:/var/lib/kafka/data
+    networks:
+      - java-project
     
   patient-services:
     build: .
@@ -31,12 +57,15 @@ services:
     depends_on:
       postgres-java:
         condition: service_healthy
+      kafka-java:
+        condition: service_healthy
     networks:
-      - java-project 
+      - java-project
 
 volumes:
   postgres-data-java:
+  kafka-data-java:
     
 networks:
   java-project:
-    driver: "bridge"
+    external: true
