@@ -1,0 +1,14 @@
+services:
+  billing-services:
+    container_name: "billing-services"
+    build: .
+    networks:
+      - java-project
+    ports:
+      - "4001:4000"
+      - "9001:9001"
+    restart: unless-stopped
+
+networks:
+  java-project:
+    external: true
