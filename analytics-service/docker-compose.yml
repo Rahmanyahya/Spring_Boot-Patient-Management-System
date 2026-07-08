@@ -5,7 +5,7 @@ services:
     networks:
       - java-project
     ports:
-      - "4002:4000"
+      - "4003:4000"
     env_file:
       - .env
     restart: unless-stopped

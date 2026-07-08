@@ -1,12 +1,11 @@
 services:
   billing-services:
-    container_name: "billing-services"
+    container_name: "api-gateway"
     build: .
     networks:
       - java-project
     ports:
-      - "4002:4000"
-      - "9001:9001"
+      - "4000:4000"
     restart: unless-stopped
 
 networks:
