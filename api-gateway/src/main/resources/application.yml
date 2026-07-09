@@ -5,16 +5,17 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: auth-service-route
+          uri: http://auth-services:4000
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=1
+
         - id: patient-service-route
           uri: http://patient-services:4000
           predicates:
             - Path=/api/patients/**
           filters:
             - StripPrefix=1
-
-        - id: auth-service-route
-          uri: http://auth-services:4000
-          predicates:
-              - Path=/api/auth/**
-          filters:
-            - StripPrefix=1
+            - JwtValidation

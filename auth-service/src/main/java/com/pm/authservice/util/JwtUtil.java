@@ -38,7 +38,7 @@ public class JwtUtil {
             Jwts.parserBuilder().
                     setSigningKey(secretKey).
                     build().
-                    parseClaimsJwt(token);
+                    parseClaimsJws(token);
         }
         catch (SignatureException e) {
             throw new JwtException("Invalid jwt signature");

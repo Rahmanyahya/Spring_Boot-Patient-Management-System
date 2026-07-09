@@ -4,8 +4,6 @@ services:
     container_name: "auth-services"
     env_file:
       - .env
-    ports:
-      - "4001:4000"
     networks:
       - java-project
     restart: unless-stopped
