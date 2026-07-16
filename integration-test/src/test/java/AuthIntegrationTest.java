@@ -6,9 +6,8 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.path.json.JsonPath.given;
-
 public class AuthIntegrationTest {
+
     @BeforeAll
     static void setUp() {
         RestAssured.baseURI = "http://localhost:4000";
@@ -34,5 +33,24 @@ public class AuthIntegrationTest {
                 .extract().response();
 
         System.out.println("Generated Token : " + response.jsonPath().getString("data.token"));
+    }
+
+    @Test
+    public  void shouldReturnUnauthorizedOnInvalidLogin() {
+        String loginPayload = """
+                    {
+                        "email": "invalid_user@test.com",
+                        "password": "wrongpassword"
+                    }
+                """;
+
+            given()
+               .contentType("application/json")
+                .body(loginPayload)
+                .when()
+                .post("/api/auth/login")
+                .then()
+                .statusCode(401)
+                .extract().response();
     }
 }
