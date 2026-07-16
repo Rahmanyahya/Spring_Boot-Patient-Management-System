@@ -39,7 +39,7 @@ public class LocalStack extends Stack {
 
         FargateService authService = createFargateService("AuthService", "auth-service",
                 List.of(4005), authServiceDB,
-                Map.of("JWT_SECRET", "ZGlhbmRyYWtlam9yYXB1dHJpZGlhbmRyYWtlam9yYXB1dHJpZGlhbmRyYWtlam9yYXB1dHJp"));
+                Map.of("JWT_SECRET", ""));
 
         authService.getNode().addDependency(authDbHealthcheck);
         authService.getNode().addDependency(authServiceDB);
