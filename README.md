@@ -1,7 +1,7 @@
 
 # Patient Management System - Personal Branding & Learning Portfolio
 
-This project is a comprehensive microservices architecture designed to demonstrate and solidify key modern Java backend technologies critical for fintech and enterprise applications. It serves as a personal learning portfolio focusing on Infrastructure as Code (IaC), Java Spring Boot, Message Brokers (Kafka), gRPC, and modern database practices.
+This project is a comprehensive microservices architecture designed to demonstrate and solidify key modern Java backend technologies critical for enterprise applications. It serves as a personal learning portfolio focusing on Infrastructure as Code (IaC), Java Spring Boot, Message Brokers (Kafka), gRPC, and modern database practices.
 
 ## Key Learning Objectives (Focus Areas)
 
@@ -165,13 +165,3 @@ Let's break down each folder and its purpose:
 ### 8. `assets/`
 **Purpose**: Contains project assets, including the architecture diagram.
 
-## Why This Matters for Fintech
-
-Fintech applications demand:
-1. **Security**: Auth service with JWT and Spring Security demonstrates secure authentication.
-2. **Scalability**: Microservices architecture with ECS allows independent scaling.
-3. **Reliability**: Event-driven with Kafka ensures data consistency and fault tolerance.
-4. **Performance**: gRPC provides high-performance inter-service communication.
-5. **Maintainability**: IaC with AWS CDK ensures reproducible and version-controlled infrastructure.
-
-This portfolio project showcases practical experience with all these critical fintech requirements.
